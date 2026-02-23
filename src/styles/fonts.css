@@ -1,0 +1,26 @@
+/* For CSS variables (--font-family-heading) */
+@font-face {
+  font-family: 'HusqvarnaGothic';
+  src: url('../../Fonts/HusqvarnaGothic-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* For Figma-generated inline styles that use "Husqvarna Gothic:Bold" notation */
+@font-face {
+  font-family: 'Husqvarna Gothic:Bold';
+  src: url('../../Fonts/HusqvarnaGothic-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Also match plain "Husqvarna Gothic" with weight 700 */
+@font-face {
+  font-family: 'Husqvarna Gothic';
+  src: url('../../Fonts/HusqvarnaGothic-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specification Table</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 40px 20px;
+      color: #222;
+      font-size: 14px;
+    }
+
+    /* ── Demo controls ─────────────────────────────────────── */
+    .controls {
+      max-width: 800px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .controls span {
+      color: #666;
+      font-size: 13px;
+    }
+
+    .controls button {
+      padding: 5px 14px;
+      border: 1px solid #bbb;
+      background: white;
+      cursor: pointer;
+      border-radius: 3px;
+      font-size: 13px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .controls button.active {
+      background: #222;
+      color: white;
+      border-color: #222;
+    }
+
+    /* ── Accordion shell ────────────────────────────────────── */
+    .accordion {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border: 1px solid #ddd;
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: left;
+      letter-spacing: 0.01em;
+    }
+
+    .accordion-trigger .chevron {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-trigger.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Body: animated via JS-set max-height */
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    /* ── Table wrapper: THE scroll container ────────────────── */
+    /*  overflow: auto on both axes makes position:sticky work   */
+    /*  for BOTH the header row (top) and first column (left).   */
+    .table-wrapper {
+      overflow: auto;
+      max-height: 520px;
+      /* Thin custom scrollbar */
+      scrollbar-width: thin;
+      scrollbar-color: #ccc transparent;
+    }
+
+    .table-wrapper::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+
+    /* ── Table ──────────────────────────────────────────────── */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    /* ── Header row ─────────────────────────────────────────── */
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #f5f5f5;
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 400;
+      vertical-align: top;
+      border-bottom: 2px solid #ddd;
+      min-width: 200px;
+      white-space: normal;
+    }
+
+    /* Corner cell: sticky both top & left */
+    thead th:first-child {
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 3;
+      min-width: 240px;
+    }
+
+    .product-name {
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1.35;
+      margin-bottom: 5px;
+      color: #111;
+    }
+
+    .article-nr {
+      font-size: 12px;
+      color: #777;
+    }
+
+    /* ── Section header rows ────────────────────────────────── */
+    tr.section-header td {
+      background: white;
+      border-top: 1px solid #e0e0e0;
+      padding: 0;
+    }
+
+    /* First cell holds the label — sticky so it doesn't scroll away */
+    tr.section-header td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 18px 16px 10px;
+      background: white;
+    }
+
+    /* Filler cells fill the remaining columns with plain white */
+    tr.section-header td.section-filler {
+      border-top: 1px solid #e0e0e0;
+    }
+
+    /* ── Data rows ──────────────────────────────────────────── */
+    tbody tr:not(.section-header) td {
+      padding: 11px 16px;
+      border-bottom: 1px solid #efefef;
+      color: #444;
+      white-space: nowrap;
+    }
+
+    /* Sticky first column in data rows */
+    tbody tr:not(.section-header) td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: white;
+      color: #333;
+      white-space: normal;     /* allow label text to wrap */
+      min-width: 240px;
+      max-width: 240px;
+    }
+
+    /* Subtle right border on sticky first column */
+    thead th:first-child,
+    tbody tr:not(.section-header) td:first-child {
+      border-right: 1px solid #e8e8e8;
+    }
+
+    /* Hover highlight */
+    tbody tr:not(.section-header):hover td {
+      background: #fafafa;
+    }
+
+    tbody tr:not(.section-header):hover td:first-child {
+      background: #fafafa;
+    }
+
+    /* ── Scroll hint (only visible when table overflows) ────── */
+    .scroll-hint {
+      display: none;
+      font-size: 12px;
+      color: #999;
+      padding: 6px 16px 10px;
+      text-align: right;
+    }
+
+    .table-wrapper.overflows + .scroll-hint {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo: column count switcher -->
+  <div class="controls">
+    <span>Demo — number of columns:</span>
+    <button onclick="setColumns(2)">2</button>
+    <button onclick="setColumns(3)">3</button>
+    <button onclick="setColumns(4)">4</button>
+    <button onclick="setColumns(5)" class="active">5</button>
+  </div>
+
+  <!-- Accordion -->
+  <div class="accordion">
+    <button class="accordion-trigger" id="accordion-btn" onclick="toggleAccordion()">
+      Specifications
+      <!-- Inline SVG chevron -->
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+
+    <div class="accordion-body" id="accordion-body">
+      <div class="table-wrapper" id="table-wrapper">
+        <table id="spec-table"></table>
+      </div>
+      <div class="scroll-hint">← Scroll to compare →</div>
+    </div>
+  </div>
+
+  <script>
+    // ── Data ─────────────────────────────────────────────────
+    const PRODUCTS = [
+      { name: '540 XP® Mark III (13" – .325" – SP33G)',    article: '970 79 30-14' },
+      { name: '540 XP® Mark III (15" – 3/8" mini – S93D)', article: '970 79 30-13' },
+      { name: '540 XP® Mark III (16" – 3/8" mini – S93T)', article: '970 79 30-16' },
+      { name: '540 XP® Mark III (14" – 3/8" mini – S95G)', article: '970 79 30-18' },
+    ];
+
+    const SPECS = [
+      { section: 'Motor' },
+      { label: 'Kedjehastighet vid max effekt',                 values: ['20,2 m/s',  '20,3 m/s',  '20,3 m/s',  '20 m/s']    },
+      { label: 'Cylindervolym',                                 values: ['39,1 cm³',  '39,1 cm³',  '40,1 cm³',  '39,1 cm³']  },
+      { label: 'Axeleffekt',                                    values: ['1,9 kW',    '1,9 kW',    '1,9 kW',    '1,9 kW']    },
+      { section: 'Utrustning' },
+      { label: 'Minsta svärdslängd',                            values: ['33 cm',     '30 cm',     '33 cm',     '30 cm']     },
+      { label: 'Kedjedelning',                                  values: ['.325"',     '3/8" mini', '.325"',     '3/8" mini'] },
+      { label: 'Rekommenderad svärdslängd, max',                values: ['38 cm',     '40 cm',     '38 cm',     '40 cm']     },
+      { label: 'Typ av kedja',                                  values: ['SP33G',     'S93G',      'SP33G',     'SP33G']     },
+      { label: 'Svärdlängde',                                   values: ['33 cm',     '35 cm',     '33 cm',     '35 cm']     },
+      { section: 'Ljud och buller' },
+      { label: 'Ljudtrycksnivå vid användarens öra, dB(A)',     values: ['102 dB(A)', '102 dB(A)', '103 dB(A)', '102 dB(A)'] },
+      { label: 'Ljudeffektnivå, garanterad LWA i dB(A)',        values: ['113 dB(A)', '110 dB(A)', '113 dB(A)', '114 dB(A)'] },
+      { section: 'Vibrationer' },
+      { label: 'Ekvivalent vibrationsnivå bakre handtag',       values: ['5,2 m/s²',  '5,1 m/s²',  '5,2 m/s²',  '5,2 m/s²'] },
+      { label: 'Ekvivalent vibrationsnivå främre handtag',      values: ['5,9 m/s²',  '3,7 m/s²',  '5,9 m/s²',  '3,7 m/s²'] },
+      { section: 'Dimensioner' },
+      { label: 'Vikt (exkl. skärutrustning)',                   values: ['4,1 kg',    '4,0 kg',    '4,1 kg',    '4,0 kg']   },
+      { label: 'Längd',                                         values: ['84 cm',     '87 cm',     '89 cm',     '86 cm']    },
+      { label: 'Höjd',                                          values: ['28 cm',     '28 cm',     '28 cm',     '28 cm']    },
+    ];
+
+    // ── Render ────────────────────────────────────────────────
+    let currentCols = 5;
+
+    function renderTable(numCols) {
+      const table   = document.getElementById('spec-table');
+      const wrapper = document.getElementById('table-wrapper');
+      const dataCols = numCols - 1;                        // excl. label column
+      const products = PRODUCTS.slice(0, dataCols);
+      const total    = numCols;                            // total <td>/<th> per row
+
+      // thead
+      let html = '<thead><tr><th></th>';
+      products.forEach(p => {
+        html += `<th>
+          <div class="product-name">${p.name}</div>
+          <div class="article-nr">Art.nr: ${p.article}</div>
+        </th>`;
+      });
+      html += '</tr></thead>';
+
+      // tbody
+      html += '<tbody>';
+      SPECS.forEach(row => {
+        if (row.section) {
+          html += `<tr class="section-header"><td>${row.section}</td>`;
+          for (let i = 0; i < dataCols; i++) {
+            html += '<td class="section-filler"></td>';
+          }
+          html += '</tr>';
+        } else {
+          html += '<tr><td>' + row.label + '</td>';
+          products.forEach((_, i) => {
+            html += '<td>' + row.values[i] + '</td>';
+          });
+          html += '</tr>';
+        }
+      });
+      html += '</tbody>';
+
+      table.innerHTML = html;
+
+      // Show scroll hint when overflowing
+      wrapper.classList.toggle('overflows', wrapper.scrollWidth > wrapper.clientWidth);
+
+      // Update accordion open height (content changed)
+      const body = document.getElementById('accordion-body');
+      if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    }
+
+    function setColumns(n) {
+      currentCols = n;
+      renderTable(n);
+      document.querySelectorAll('.controls button').forEach((btn, i) => {
+        btn.classList.toggle('active', i === n - 2);
+      });
+    }
+
+    // ── Accordion ─────────────────────────────────────────────
+    function toggleAccordion() {
+      const btn  = document.getElementById('accordion-btn');
+      const body = document.getElementById('accordion-body');
+      const isOpen = btn.classList.toggle('open');
+
+      if (isOpen) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      } else {
+        body.style.maxHeight = '0';
+      }
+    }
+
+    // ── Init ──────────────────────────────────────────────────
+    setColumns(currentCols);   // renders table + sets active button
+    toggleAccordion();         // open by default
+  </script>
+</body>
+</html>
