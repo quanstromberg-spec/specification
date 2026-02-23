@@ -144,7 +144,7 @@ export default function MobilePage() {
           }}>
             Compare specifications and features with similar Husqvarna products.
           </p>
-          <a href="/" style={{ textDecoration: "none" }}>
+          <a href="./" style={{ textDecoration: "none" }}>
             <div style={{
               display: "inline-flex",
               alignItems: "center",

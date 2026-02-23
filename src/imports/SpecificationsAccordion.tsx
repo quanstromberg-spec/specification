@@ -638,7 +638,7 @@ function Frame50() {
       <p className="font-['Roboto:Regular',sans-serif] font-[350] leading-[24px] relative shrink-0 text-[#3d3d3c] text-[16px] tracking-[0.4px]" style={{ fontVariationSettings: "\'wdth\' 100" }}>
         Compare specifications and features with similar Husqvarna products.
       </p>
-      <a href="/mobile.html" style={{ textDecoration: "none" }}>
+      <a href="./mobile.html" style={{ textDecoration: "none" }}>
         <div className="content-stretch flex h-[48px] items-center relative rounded-[16px] shrink-0" data-name="Secondary button">
           <div aria-hidden="true" className="absolute border border-[#3d3d3c] border-solid inset-0 pointer-events-none rounded-[16px]" />
           <ButtonText />
@@ -2707,7 +2707,7 @@ function Frame51() {
       <p className="font-['Roboto:Regular',sans-serif] font-[350] leading-[24px] relative shrink-0 text-[#3d3d3c] text-[16px] tracking-[0.4px]" style={{ fontVariationSettings: "\'wdth\' 100" }}>
         Compare specifications and features with similar Husqvarna products.
       </p>
-      <a href="/mobile.html" style={{ textDecoration: "none" }}>
+      <a href="./mobile.html" style={{ textDecoration: "none" }}>
         <div className="content-stretch flex h-[48px] items-center relative rounded-[16px] shrink-0" data-name="Secondary button">
           <div aria-hidden="true" className="absolute border border-[#3d3d3c] border-solid inset-0 pointer-events-none rounded-[16px]" />
           <ButtonText3 />
