@@ -3437,7 +3437,9 @@ function SpecificationTableScrollable() {
               overflowY: "hidden",
               scrollbarWidth: "none",
               background: hdrBg,
-              borderBottom: bdrSec,
+              borderRadius: canScrollRight ? "36px 0 0 0" : "36px 36px 0 0",
+              border: bdrSec,
+              borderRight: canScrollRight ? "none" : bdrSec,
             }}
           >
             <table style={{ borderCollapse: "collapse", minWidth: "840px", width: "100%" }}>
@@ -3533,9 +3535,9 @@ function SpecificationTableScrollable() {
           width: "800px",
           overflowX: "auto",
           overflowY: "clip",
-          borderRadius: "36px 0 0 36px",
+          borderRadius: canScrollRight ? "36px 0 0 36px" : "36px",
           border: "1px solid #eeeeed",
-          borderRight: "none",
+          borderRight: canScrollRight ? "none" : "1px solid #eeeeed",
           scrollbarWidth: "thin",
           scrollbarColor: "#d2d2d1 transparent",
         }}
@@ -7499,19 +7501,19 @@ export function SpecificationTableScrollableMobile() {
       {/* Fixed clone header */}
       {sticky && (
         <div style={{ position: "fixed", top: 0, left: stickyLeft, width: containerWidth, zIndex: 50 }}>
-          <div ref={stickyRef} style={{ overflowX: "auto", overflowY: "hidden", scrollbarWidth: "none", background: hdrBg, borderBottom: bdrSec }}>
+          <div ref={stickyRef} style={{ overflowX: "auto", overflowY: "hidden", scrollbarWidth: "none", background: hdrBg, borderRadius: canScrollRight ? "20px 0 0 0" : "20px 20px 0 0", border: bdrSec, borderRight: canScrollRight ? "none" : bdrSec }}>
             <table style={{ borderCollapse: "collapse", minWidth: tableMinWidth, width: "100%" }}>
               <thead>{headerRow}</thead>
             </table>
           </div>
           {gradientOverlay}
           {canScrollRight && (
-            <button onClick={() => scrollToCol('right')} style={{ position: "absolute", right: -42, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10 }}>
+            <button onClick={() => scrollToCol('right')} style={{ position: "absolute", right: -42, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10, transform: "scale(0.8)" }}>
               <ArrowIcon filterId="arr-m-sticky-r" />
             </button>
           )}
           {canScrollLeft && (
-            <button onClick={() => scrollToCol('left')} style={{ position: "absolute", left: 12, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10 }}>
+            <button onClick={() => scrollToCol('left')} style={{ position: "absolute", left: 72, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10, transform: "scale(0.8)" }}>
               <ArrowIcon filterId="arr-m-sticky-l" mirrored />
             </button>
           )}
@@ -7521,12 +7523,12 @@ export function SpecificationTableScrollableMobile() {
       {gradientOverlay}
 
       {canScrollRight && (
-        <button onClick={() => scrollToCol('right')} style={{ position: "absolute", right: -42, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10 }}>
+        <button onClick={() => scrollToCol('right')} style={{ position: "absolute", right: -42, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10, transform: "scale(0.8)" }}>
           <ArrowIcon filterId="arr-m-r" />
         </button>
       )}
       {canScrollLeft && (
-        <button onClick={() => scrollToCol('left')} style={{ position: "absolute", left: 12, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10 }}>
+        <button onClick={() => scrollToCol('left')} style={{ position: "absolute", left: 72, top: 10, width: 96, height: 96, background: "none", border: "none", cursor: "pointer", padding: 0, zIndex: 10, transform: "scale(0.8)" }}>
           <ArrowIcon filterId="arr-m-l" mirrored />
         </button>
       )}
@@ -7534,8 +7536,8 @@ export function SpecificationTableScrollableMobile() {
       {/* Main scroll wrapper */}
       <div ref={wrapperRef} style={{
         width: "100%", overflowX: "auto", overflowY: "clip",
-        borderRadius: "20px 0 0 20px",
-        border: "1px solid #eeeeed", borderRight: "none",
+        borderRadius: canScrollRight ? "20px 0 0 20px" : "20px",
+        border: "1px solid #eeeeed", borderRight: canScrollRight ? "none" : "1px solid #eeeeed",
         scrollbarWidth: "thin", scrollbarColor: "#d2d2d1 transparent",
       }}>
         <table style={{ borderCollapse: "collapse", minWidth: tableMinWidth, width: "100%" }}>
