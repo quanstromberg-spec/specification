@@ -3401,7 +3401,9 @@ function SpecificationTableScrollable() {
         background: hdrBg, minWidth: "260px", width: "260px",
         padding: "24px 8px 16px", textAlign: "left",
         borderBottom: bdrSec,
-      }} />
+      }}>
+        {canScrollLeft && <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: "0.5px", background: "#D2D2D1", pointerEvents: "none" }} />}
+      </th>
       {products.map((p, i) => (
         <th key={i} style={{
           position: "relative", zIndex: 1,
@@ -3556,6 +3558,7 @@ function SpecificationTableScrollable() {
                     padding: "16px 24px", borderBottom: bdrSec,
                   }}>
                     {row.section}
+                    {canScrollLeft && <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: "0.5px", background: "#D2D2D1", pointerEvents: "none" }} />}
                   </td>
                   {products.map((_, j) => (
                     <td key={j} style={{ background: bodyBg, borderBottom: bdrSec }} />
@@ -3571,6 +3574,7 @@ function SpecificationTableScrollable() {
                     minWidth: "260px", borderBottom: bdrData,
                   }}>
                     {row.label}
+                    {canScrollLeft && <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: "0.5px", background: "#D2D2D1", pointerEvents: "none" }} />}
                   </td>
                   {(row.values ?? []).map((v, j) => (
                     <td key={j} style={{
@@ -7467,7 +7471,9 @@ export function SpecificationTableScrollableMobile() {
         position: "sticky", left: 0, zIndex: 3,
         background: hdrBg, minWidth: labelWidth, width: labelWidth,
         padding: "14px 8px 10px 12px", textAlign: "left", borderBottom: bdrSec,
-      }} />
+      }}>
+        {canScrollLeft && <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: "0.5px", background: "#D2D2D1", pointerEvents: "none" }} />}
+      </th>
       {products.map((p, i) => (
         <th key={i} style={{
           position: "relative", zIndex: 1,
@@ -7548,6 +7554,7 @@ export function SpecificationTableScrollableMobile() {
                 <tr key={i}>
                   <td style={{ position: "sticky", left: 0, zIndex: 1, background: bodyBg, fontFamily: fontHd, fontSize: 15, lineHeight: "20px", color: text, padding: "10px 12px", borderBottom: bdrSec }}>
                     {row.section}
+                    {canScrollLeft && <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: "0.5px", background: "#D2D2D1", pointerEvents: "none" }} />}
                   </td>
                   {products.map((_, j) => <td key={j} style={{ background: bodyBg, borderBottom: bdrSec }} />)}
                 </tr>
@@ -7555,6 +7562,7 @@ export function SpecificationTableScrollableMobile() {
                 <tr key={i}>
                   <td style={{ position: "sticky", left: 0, zIndex: 1, background: bodyBg, fontFamily: fontBody, fontSize: 16, lineHeight: "20px", letterSpacing: "0.3px", color: text, padding: "8px 12px", fontWeight: 350, minWidth: labelWidth, borderBottom: bdrData }}>
                     {row.label}
+                    {canScrollLeft && <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: "0.5px", background: "#D2D2D1", pointerEvents: "none" }} />}
                   </td>
                   {(row.values ?? []).map((v, j) => (
                     <td key={j} style={{ fontFamily: fontBody, fontSize: 14, lineHeight: "18px", letterSpacing: "0.3px", color: text, padding: "8px", fontWeight: 350, minWidth: colWidth, borderBottom: bdrData }}>
