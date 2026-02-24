@@ -3430,7 +3430,7 @@ function SpecificationTableScrollable() {
       <div ref={sentinelRef} style={{ height: 0 }} />
       {/* Fixed clone header — appears when original thead scrolls above viewport */}
       {sticky && (
-        <div style={{ position: "fixed", top: 0, left: stickyLeft, width: "800px", zIndex: 50 }}>
+        <div style={{ position: "fixed", top: 0, left: stickyLeft, width: "800px", zIndex: 50, background: "#fff" }}>
           {/* Scrollable clone header */}
           <div
             ref={stickyRef}
@@ -7506,7 +7506,7 @@ export function SpecificationTableScrollableMobile() {
 
       {/* Fixed clone header */}
       {sticky && (
-        <div style={{ position: "fixed", top: 0, left: stickyLeft, width: containerWidth, zIndex: 50 }}>
+        <div style={{ position: "fixed", top: 0, left: stickyLeft, width: containerWidth, zIndex: 50, background: "#fff" }}>
           <div ref={stickyRef} style={{ overflowX: "auto", overflowY: "hidden", scrollbarWidth: "none", background: hdrBg, borderRadius: canScrollRight ? "20px 0 0 0" : "20px 20px 0 0", border: bdrSec, borderRight: canScrollRight ? "none" : bdrSec }}>
             <table style={{ borderCollapse: "collapse", minWidth: tableMinWidth, width: "100%" }}>
               <thead>{headerRow}</thead>
