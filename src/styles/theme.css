@@ -182,6 +182,7 @@
     @apply bg-background text-foreground;
     font-family: var(--font-family-body);
     font-weight: 350;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
